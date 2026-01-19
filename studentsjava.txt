@@ -1,0 +1,91 @@
+import java.util.Scanner;
+
+public class StudentResultSystem {
+
+    // Method to calculate percentage
+    static double calculatePercentage(int totalMarks, int numberOfSubjects) {
+        return (double) totalMarks / numberOfSubjects;
+    }
+
+    // Method to assign grade using switch
+    static String assignGrade(double percentage) {
+        int gradeCategory = (int) percentage / 10;
+
+        switch (gradeCategory) {
+            case 10:
+            case 9:
+                return "A+";
+            case 8:
+                return "A";
+            case 7:
+                return "B";
+            case 6:
+                return "C";
+            case 5:
+                return "D";
+            default:
+                return "Fail";
+        }
+    }
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+        char choice;
+
+        do {
+            System.out.println("\n===== Student Result Processing System =====");
+
+            System.out.print("Enter Student Name: ");
+            String name = sc.next();
+
+            System.out.print("Enter Number of Subjects: ");
+            int subjects = sc.nextInt();
+
+            int totalMarks = 0;
+
+            // Loop for subject marks
+            for (int i = 1; i <= subjects; i++) {
+                System.out.print("Enter marks for Subject " + i + ": ");
+                int marks = sc.nextInt();
+
+                // Validation logic
+                if (marks < 0 || marks > 100) {
+                    System.out.println("❌ Invalid marks! Enter between 0 and 100.");
+                    i--;        // repeat same subject
+                    continue;   // skip remaining code
+                }
+
+                totalMarks += marks;
+            }
+
+            double percentage = calculatePercentage(totalMarks, subjects);
+            String grade = assignGrade(percentage);
+
+            // Result Summary
+            System.out.println("\n----- Result Summary -----");
+            System.out.println("Student Name   : " + name);
+            System.out.println("Total Marks    : " + totalMarks);
+            System.out.println("Percentage     : " + percentage + "%");
+            System.out.println("Grade          : " + grade);
+
+            if (grade.equals("Fail")) {
+                System.out.println("Status         : ❌ Failed");
+            } else {
+                System.out.println("Status         : ✅ Passed");
+            }
+
+            // Continue or Exit
+            System.out.print("\nDo you want to enter another student? (Y/N): ");
+            choice = sc.next().toUpperCase().charAt(0);
+
+            if (choice == 'N') {
+                break;
+            }
+
+        } while (choice == 'Y');
+
+        System.out.println("\nThank you for using the Student Result System!");
+        sc.close();
+    }
+}
